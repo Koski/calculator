@@ -9,15 +9,38 @@ Calculator.Operation = Ember.Object.extend(Flame.Validatable, {
 
 Calculator.operationsController = Ember.Object.create({
     value: 0,
+    memory: 0,
+
+    calc: function(input) {
+        this.set('input', eval(getInput()))
+    },
+
+    getInput: function() {
+        return this.get('input');
+    },
 
     increment: function() {
-        this.value += this.get('input');
+        this.value = eval(this.get('input'))
+        this.set('input', this.value)
+        //this.value += '+'
+        this.value += '+';
         this.set('input', this.value)
     },
 
     clear : function() {
         this.value = 0;
         this.set('input', '');
+    },
+    numCatenation: function() {
+        if (this.value == 0) {
+            this.value = '7'
+        } else {
+           this.value += '7' 
+        }     
+        this.set('input',this.value)
+    },
+    result: function() {
+        this.set('input', eval(this.get('input')))
     }
     //console.log('kk' + input);
 });
@@ -83,7 +106,9 @@ Calculator.RootView = Flame.RootView.extend({
 
     seven: Flame.ButtonView.extend({
         layout: {left: 1, top: 95, width: 30},
-        title: '7'
+        title: '7',
+        targetBinding: '^controller',
+        action: 'numCatenation'
     }),
 
     eight: Flame.ButtonView.extend({
@@ -140,7 +165,9 @@ Calculator.RootView = Flame.RootView.extend({
 
     result: Flame.ButtonView.extend({
         layout: {left: 94, top: 145, width: 30, height: 50},
-        title: '='
+        title: '=',
+        targetBinding: '^controller',
+        action: 'result'
     }),
 
     zero: Flame.ButtonView.extend({
@@ -156,42 +183,3 @@ Calculator.RootView = Flame.RootView.extend({
 
     
 });
-//     childViews: 'splitView'.w(),
-
-//     splitView: Flame.VerticalSplitView.extend({
-//         leftWidth: 250,
-//         minLeftWidth: 200,
-
-//         leftView: Flame.View.extend({
-//             childViews: 'titleView buttonView'.w(),
-
-//             titleView: Flame.LabelView.extend({
-//                 layout: { left: 5, right: 5, top: 10 },
-//                 textAlign: Flame.ALIGN_CENTER,
-//                 value: 'Flame.js'
-//             }),
-
-
-
-//             buttonView: Flame.ButtonView.extend({
-//                 layout: { left: 5, right: 5, top: 40 },
-//                 title: 'Flame!',
-//                 action: function() {
-//                     Flame.AlertPanel.info({
-//                         title: 'Hi!',
-//                         message: 'This is a Flame.AlertPanel'
-//                     }).popup();
-//                 }
-//             })
-//         }),
-
-//         rightView: Flame.View.extend({
-//             childViews: 'labelView'.w(),
-
-//             labelView: Flame.LabelView.extend({
-//                 layout: { left: 50, top: 20 },
-//                 value: 'Hello World!'
-//             })
-//         })
-//     })
-// });
