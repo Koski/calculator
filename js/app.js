@@ -69,7 +69,10 @@ Calculator.buttonsController = Ember.Object.create(
             },
 
             dot: function() {
-                this.set('input', this.get('input') + '.')
+                var input = this.get('input')
+                if (input.indexOf('.') == -1) {
+                    this.set('input', input + '.')
+                }
             },
 
             clear: function() {
@@ -80,7 +83,7 @@ Calculator.buttonsController = Ember.Object.create(
 
             numCatenation: function(num) {
                 if (!this.get('input')) {
-                    this.set('input', num)
+                    this.set('input', num+'')
                     return;
                 }
                 if (operation && value == this.get('input')) {
@@ -91,6 +94,9 @@ Calculator.buttonsController = Ember.Object.create(
             },
 
             result: function() {
+                if (!operation) {
+                    return;
+                }
                 value = operation(value, this.get('input'))
                 operation = undefined;
                 this.set('input', value)
@@ -133,7 +139,8 @@ Calculator.RootView = Flame.RootView.extend({
 
     input: Flame.TextFieldView.extend({
         layout: { left: 1, top: 20, width: 125 },
-        valueBinding: '^controller.input'
+        valueBinding: '^controller.input',
+        isDisabled:true
     }),
 
     memClear: Flame.ButtonView.extend({
