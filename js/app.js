@@ -17,47 +17,39 @@ Calculator.buttonsController = Ember.Object.create(
             this.set('input', '')
         }
 
+        function calculatePrevious() {
+            if (operation) {
+                doOperation.call(this);
+            } else {
+                setValueAndClearInput.call(this);                    
+            }
+        }
+
         return {
 
-            increment: function() {             
-                if (operation) {
-                    doOperation.call(this);
-                    return;
-                }
-                setValueAndClearInput.call(this);
+            increment: function() {           
+                calculatePrevious.call(this);
                 operation = function(a,b) {
                     return parseFloat(a)+parseFloat(b);
                 }
             },
 
             subtract: function() {
-                if(operation) {
-                    doOperation.call(this);
-                    return;
-                }
-                setValueAndClearInput.call(this);
+                calculatePrevious.call(this);         
                 operation = function(a,b) {
                     return parseFloat(a) - parseFloat(b);
                 }
             },
 
             multiply: function() {
-                if (operation) {
-                    doOperation.call(this);
-                    return;
-                }
-                setValueAndClearInput.call(this);
+                calculatePrevious.call(this);  
                 operation = function(a,b) {
                     return parseFloat(a) * parseFloat(b);
                 }
             },
 
             divide: function() {
-                if(operation) {
-                    doOperation.call(this);
-                    return;
-                }
-                setValueAndClearInput.call(this);
+                calculatePrevious.call(this);
                 operation = function(a, b) {
                     return parseFloat(a) / parseFloat(b);
                 }
